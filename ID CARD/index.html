@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ID Card Generator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .id-card {
+    width: 300px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+</head>
+<body>
+<div class="id-card">
+  <h2>ID Card Generator</h2>
+  <input type="text" id="name" placeholder="Name">
+  <input type="number" id="age" placeholder="Age">
+  <input type="email" id="email" placeholder="Email">
+  <input type="text" id="address" placeholder="Address">
+  <input type="text" id="college" placeholder="College Name">
+  <input type="text" id="country" placeholder="Country">
+  <input type="button" value="Upload Image" id="uploadBtn">
+  <input type="text" id="uniqueCode" placeholder="Unique Code" readonly>
+  <button onclick="generateCard()">Generate ID Card</button>
+  <div id="result"></div>
+</div>
+
+<script>
+let uploadedImage = '';
+document.getElementById('uploadBtn').addEventListener('click', function() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.click();
+
+  input.addEventListener('change', function() {
+    const file = input.files[0];
+    uploadedImage = URL.createObjectURL(file);
+  });
+});
+
+function generateCard() {
+  const name = document.getElementById('name').value;
+  const age = document.getElementById('age').value;
+  const email = document.getElementById('email').value;
+  const address = document.getElementById('address').value;
+  const college = document.getElementById('college').value;
+  const country = document.getElementById('country').value;
+  const uniqueCode = generateUniqueCode();
+
+  const cardHTML = `
+    <img src="${uploadedImage}" alt="Avatar">
+    <h3>${name}</h3>
+    <p>Age: ${age}</p>
+    <p>Email: ${email}</p>
+    <p>Address: ${address}</p>
+    <p>College: ${college}</p>
+    <p>Country: ${country}</p>
+    <p>Unique Code: ${uniqueCode}</p>
+  `;
+
+  document.getElementById('result').innerHTML = cardHTML;
+}
+
+function generateUniqueCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    code += characters.charAt(randomIndex);
+  }
+  return code;
+}
+</script>
+</body>
+</html>
+
